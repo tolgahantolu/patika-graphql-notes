@@ -1,6 +1,6 @@
 const users = [
-  { id: "1", fullname: "Tolgahan Hanoğlu" },
-  { id: "2", fullname: "Can Cananoğlu" },
+  { id: "1", fullname: "Tolgahan Hanoğlu", age: 31 },
+  { id: "2", fullname: "Can Cananoğlu", age: 24 },
 ];
 
 const posts = [

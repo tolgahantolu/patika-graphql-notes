@@ -9,12 +9,19 @@ const typeDefs = gql`
   type User {
     id: ID!
     fullname: String!
+    age: Int!
     posts: [Post!]!
     comments: [Comment!]
   }
 
   input CreateUserInput {
     fullname: String!
+    age: Int!
+  }
+
+  input UpdateUserInput {
+    fullname: String
+    age: Int
   }
 
   type Post {
@@ -28,6 +35,11 @@ const typeDefs = gql`
   input CreatePostInput {
     title: String!
     user_id: ID!
+  }
+
+  input UpdatePostInput {
+    title: String
+    user_id: ID
   }
 
   type Comment {
@@ -44,6 +56,12 @@ const typeDefs = gql`
     user_id: ID!
   }
 
+  input UpdateCommentInput {
+    text: String
+    post_id: ID
+    user_id: ID
+  }
+
   type Query {
     getUsers: [User!]!
     getUser(id: ID!): User!
@@ -55,8 +73,11 @@ const typeDefs = gql`
 
   type Mutation {
     createUser(data: CreateUserInput!): User!
+    updateUser(id: ID!, data: UpdateUserInput!): User!
     createPost(data: CreatePostInput!): Post!
+    updatePost(id: ID!, data: UpdatePostInput!): Post!
     createComment(data: CreateCommentInput!): Comment!
+    updateComment(id: ID!, data: UpdateCommentInput!): Comment!
   }
 `;
 
@@ -67,15 +88,46 @@ const resolvers = {
       users.push(user);
       return user;
     },
+    updateUser: (_, { id, data }) => {
+      const userIndex = users.findIndex((user) => user.id === id);
+      if (userIndex === -1) throw new Error("User not found!");
+
+      const updatedUser = (users[userIndex] = {
+        ...users[userIndex],
+        ...data,
+      });
+
+      return updatedUser;
+    },
     createPost: (_, { data }) => {
       const post = { id: nanoid(), ...data };
       posts.push(post);
       return post;
     },
+    updatePost: (_, { id, data }) => {
+      const postIndex = posts.findIndex((post) => post.id === id);
+      if (postIndex === -1) throw new Error("Post not found!");
+      const updatedPost = (posts[postIndex] = {
+        ...posts[postIndex],
+        ...data,
+      });
+
+      return updatedPost;
+    },
     createComment: (_, { data }) => {
       const comment = { id: nanoid(), ...data };
       comments.push(comment);
       return comment;
+    },
+    updateComment: (_, { id, data }) => {
+      const commentIndex = comments.findIndex((comment) => comment.id === id);
+      if (commentIndex === -1) throw new Error("Comment not found!");
+      const updatedComment = (comments[commentIndex] = {
+        ...comments[commentIndex],
+        ...data,
+      });
+
+      return updatedComment;
     },
   },
   Query: {
