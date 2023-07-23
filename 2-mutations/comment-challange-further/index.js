@@ -13,6 +13,10 @@ const typeDefs = gql`
     comments: [Comment!]
   }
 
+  input CreateUserInput {
+    fullname: String!
+  }
+
   type Post {
     id: ID!
     title: String!
@@ -21,12 +25,23 @@ const typeDefs = gql`
     comments: [Comment!]
   }
 
+  input CreatePostInput {
+    title: String!
+    user_id: ID!
+  }
+
   type Comment {
     id: ID!
     text: String!
     post_id: ID!
     user: User!
     post: Post!
+  }
+
+  input CreateCommentInput {
+    text: String!
+    post_id: ID!
+    user_id: ID!
   }
 
   type Query {
@@ -39,26 +54,26 @@ const typeDefs = gql`
   }
 
   type Mutation {
-    createUser(fullname: String!): User!
-    createPost(title: String!, user_id: ID!): Post!
-    createComment(text: String!, post_id: ID!, user_id: ID!): Comment!
+    createUser(data: CreateUserInput!): User!
+    createPost(data: CreatePostInput!): Post!
+    createComment(data: CreateCommentInput!): Comment!
   }
 `;
 
 const resolvers = {
   Mutation: {
-    createUser: (parent, { fullname }) => {
-      const user = { id: nanoid(), fullname };
+    createUser: (parent, { data }) => {
+      const user = { id: nanoid(), ...data };
       users.push(user);
       return user;
     },
-    createPost: (_, { title, user_id }) => {
-      const post = { id: nanoid(), title, user_id };
+    createPost: (_, { data }) => {
+      const post = { id: nanoid(), ...data };
       posts.push(post);
       return post;
     },
-    createComment: (_, { text, post_id, user_id }) => {
-      const comment = { id: nanoid(), text, post_id, user_id };
+    createComment: (_, { data }) => {
+      const comment = { id: nanoid(), ...data };
       comments.push(comment);
       return comment;
     },
