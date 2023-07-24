@@ -62,6 +62,10 @@ const typeDefs = gql`
     user_id: ID
   }
 
+  type DeleteAllOutput {
+    count: Int!
+  }
+
   type Query {
     getUsers: [User!]!
     getUser(id: ID!): User!
@@ -74,10 +78,18 @@ const typeDefs = gql`
   type Mutation {
     createUser(data: CreateUserInput!): User!
     updateUser(id: ID!, data: UpdateUserInput!): User!
+    deleteUser(id: ID!): User!
+    deleteAllUsers: DeleteAllOutput!
+
     createPost(data: CreatePostInput!): Post!
     updatePost(id: ID!, data: UpdatePostInput!): Post!
+    deletePost(id: ID!): Post!
+    deleteAllPosts: DeleteAllOutput!
+
     createComment(data: CreateCommentInput!): Comment!
     updateComment(id: ID!, data: UpdateCommentInput!): Comment!
+    deleteComment(id: ID!): Comment!
+    deleteAllComments: DeleteAllOutput!
   }
 `;
 
@@ -99,6 +111,21 @@ const resolvers = {
 
       return updatedUser;
     },
+    deleteUser: (_, { id }) => {
+      const userIndex = users.findIndex((user) => user.id === id);
+      if (userIndex === -1) throw new Error("User not found!");
+      const deletedUser = users[userIndex];
+      users.splice(userIndex, 1);
+      return deletedUser;
+    },
+    deleteAllUsers: () => {
+      const length = users.length;
+      users.splice(0, length);
+
+      return {
+        count: length,
+      };
+    },
     createPost: (_, { data }) => {
       const post = { id: nanoid(), ...data };
       posts.push(post);
@@ -114,6 +141,21 @@ const resolvers = {
 
       return updatedPost;
     },
+    deletePost: (_, { id }) => {
+      const postIndex = posts.findIndex((post) => post.id === id);
+      if (postIndex === -1) throw new Error("Post not found!");
+      const deletedPost = posts[postIndex];
+      posts.splice(postIndex, 1);
+      return deletedPost;
+    },
+    deleteAllPosts: () => {
+      const length = posts.length;
+      posts.splice(0, length);
+
+      return {
+        count: length,
+      };
+    },
     createComment: (_, { data }) => {
       const comment = { id: nanoid(), ...data };
       comments.push(comment);
@@ -128,6 +170,21 @@ const resolvers = {
       });
 
       return updatedComment;
+    },
+    deleteComment: (_, { id }) => {
+      const commentIndex = comments.findIndex((comment) => comment.id === id);
+      if (commentIndex === -1) throw new Error("Comment not found!");
+      const deletedComment = comments[commentIndex];
+      comments.splice(commentIndex, 1);
+      return deletedComment;
+    },
+    deleteAllComments: () => {
+      const length = comments.length;
+      comments.splice(0, length);
+
+      return {
+        count: length,
+      };
     },
   },
   Query: {
