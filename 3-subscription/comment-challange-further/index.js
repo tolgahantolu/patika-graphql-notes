@@ -1,4 +1,4 @@
-const { GraphQLServer, PubSub } = require("graphql-yoga");
+const { GraphQLServer, PubSub, withFilter } = require("graphql-yoga");
 const { nanoid } = require("nanoid");
 const { users, posts, comments } = require("./data");
 
@@ -93,7 +93,9 @@ const typeDefs = `
 	userCreated: User!
 	userUpdated: User!
 	userDeleted: User!
-  }
+
+	postCreated(user_id: ID): Post!
+}
 `;
 
 const resolvers = {
@@ -109,6 +111,20 @@ const resolvers = {
     userDeleted: {
       subscribe: (_, __, context) =>
         context.pubsub.asyncIterator("userDeleted"),
+    },
+
+    postCreated: {
+      subscribe: withFilter(
+        (_, __, context) => context.pubsub.asyncIterator("userCreated"),
+        (payload, variables) => {
+          console.log("payload", payload);
+          console.log("variables", variables);
+
+          return variables.user_id
+            ? payload.postCreated.user_id === variables.user_id
+            : true;
+        }
+      ),
     },
   },
   Mutation: {
