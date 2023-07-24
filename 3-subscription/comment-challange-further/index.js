@@ -91,6 +91,8 @@ const typeDefs = `
 
   type Subscription {
 	userCreated: User!
+	userUpdated: User!
+	userDeleted: User!
   }
 `;
 
@@ -100,6 +102,14 @@ const resolvers = {
       subscribe: (_, __, context) =>
         context.pubsub.asyncIterator("userCreated"),
     },
+    userUpdated: {
+      subscribe: (_, __, context) =>
+        context.pubsub.asyncIterator("userUpdated"),
+    },
+    userDeleted: {
+      subscribe: (_, __, context) =>
+        context.pubsub.asyncIterator("userDeleted"),
+    },
   },
   Mutation: {
     createUser: (parent, { data }, context) => {
@@ -108,7 +118,7 @@ const resolvers = {
       context.pubsub.publish("userCreated", { userCreated: user });
       return user;
     },
-    updateUser: (_, { id, data }) => {
+    updateUser: (_, { id, data }, context) => {
       const userIndex = users.findIndex((user) => user.id === id);
       if (userIndex === -1) throw new Error("User not found!");
 
@@ -117,13 +127,18 @@ const resolvers = {
         ...data,
       });
 
+      context.pubsub.publish("userUpdated", { userUpdated: updatedUser });
+
       return updatedUser;
     },
-    deleteUser: (_, { id }) => {
+    deleteUser: (_, { id }, context) => {
       const userIndex = users.findIndex((user) => user.id === id);
       if (userIndex === -1) throw new Error("User not found!");
       const deletedUser = users[userIndex];
       users.splice(userIndex, 1);
+
+      context.pubsub.publish("userDeleted", { userDeleted: deletedUser });
+
       return deletedUser;
     },
     deleteAllUsers: () => {
