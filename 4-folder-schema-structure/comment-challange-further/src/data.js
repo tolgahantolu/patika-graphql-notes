@@ -15,7 +15,7 @@ const comments = [
   { id: "3", text: "haha foo dolor var ipsum baz", post_id: "2", user_id: "1" },
 ];
 
-module.exports = {
+export default {
   users,
   posts,
   comments,
