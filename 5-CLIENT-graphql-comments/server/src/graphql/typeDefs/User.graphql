@@ -1,0 +1,35 @@
+type User {
+  id: ID!
+  fullname: String!
+  age: Int!
+  posts: [Post!]!
+  comments: [Comment!]
+}
+
+input CreateUserInput {
+  fullname: String!
+  age: Int!
+}
+
+input UpdateUserInput {
+  fullname: String
+  age: Int
+}
+
+type Query {
+  getUsers: [User!]!
+  getUser(id: ID!): User!
+}
+
+type Mutation {
+  createUser(data: CreateUserInput!): User!
+  updateUser(id: ID!, data: UpdateUserInput!): User!
+  deleteUser(id: ID!): User!
+  deleteAllUsers: DeleteAllOutput!
+}
+
+type Subscription {
+  userCreated: User!
+  userUpdated: User!
+  userDeleted: User!
+}
