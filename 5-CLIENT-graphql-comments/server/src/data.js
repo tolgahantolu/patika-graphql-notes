@@ -18,6 +18,8 @@ const posts = [
     id: "1",
     title: "Tolgahan'in gönderisi",
     description:
+      "HELLOOOOOOOO! Sed eu tempor est. Praesent ac ullamcorper sem, a porttitor augue. Curabitur lacus magna, vulputate varius pulvinar sit amet, finibus vitae felis. Nulla ultrices enim felis, in posuere lorem tempor nec. Morbi nec ornare metus, ultricies pretium erat. Duis at nunc vel turpis scelerisque auctor. Nunc commodo eget mi vel pellentesque. Aliquam quis venenatis mi, nec pretium magna. Vestibulum pellentesque vestibulum eros et sodales. Donec et ornare augue.",
+    shortDescription:
       "ne değişik bi şey bu... lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet",
     user_id: "1",
     cover:
@@ -27,6 +29,8 @@ const posts = [
     id: "2",
     title: "Tolgahan'in gönderisi",
     description:
+      "hayat çok güzel!!! Sed eu tempor est. Praesent ac ullamcorper sem, a porttitor augue. Curabitur lacus magna, vulputate varius pulvinar sit amet, finibus vitae felis. Nulla ultrices enim felis, in posuere lorem tempor nec. Morbi nec ornare metus, ultricies pretium erat. Duis at nunc vel turpis scelerisque auctor. Nunc commodo eget mi vel pellentesque. Aliquam quis venenatis mi, nec pretium magna. Vestibulum pellentesque vestibulum eros et sodales. Donec et ornare augue.",
+    shortDescription:
       "kendimi çok değişik hissediyorum artik, lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet",
     user_id: "1",
     cover:
@@ -36,6 +40,8 @@ const posts = [
     id: "3",
     title: "Can'in gönderisi",
     description:
+      "kitap okumak ve kod yazmak çok güzel ve eğlenceli, Sed eu tempor est. Praesent ac ullamcorper sem, a porttitor augue. Curabitur lacus magna, vulputate varius pulvinar sit amet, finibus vitae felis. Nulla ultrices enim felis, in posuere lorem tempor nec. Morbi nec ornare metus, ultricies pretium erat. Duis at nunc vel turpis scelerisque auctor. Nunc commodo eget mi vel pellentesque. Aliquam quis venenatis mi, nec pretium magna. Vestibulum pellentesque vestibulum eros et sodales. Donec et ornare augue.",
+    shortDescription:
       "kitap okumak ve kod yazmak çok güzel ve eğlenceli, lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet",
     user_id: "2",
     cover:

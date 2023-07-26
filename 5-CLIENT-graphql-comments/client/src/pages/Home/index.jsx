@@ -25,7 +25,7 @@ const Home = () => {
           <List.Item.Meta
             avatar={<Avatar src={item.user.profilePhoto} />}
             title={<Link to={`post/${item.id}`}>{item.title}</Link>}
-            description={item.description}
+            description={item.shortDescription}
           />
         </List.Item>
       )}
