@@ -1,6 +1,7 @@
 type User {
   id: ID!
   fullname: String!
+  profilePhoto: String
   age: Int!
   posts: [Post!]!
   comments: [Comment!]
@@ -8,11 +9,13 @@ type User {
 
 input CreateUserInput {
   fullname: String!
+  profilePhoto: String
   age: Int!
 }
 
 input UpdateUserInput {
   fullname: String
+  profilePhoto: String
   age: Int
 }
 

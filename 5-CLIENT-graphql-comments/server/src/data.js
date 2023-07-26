@@ -1,12 +1,40 @@
 const users = [
-  { id: "1", fullname: "Tolgahan Hanoğlu", age: 31 },
-  { id: "2", fullname: "Can Cananoğlu", age: 24 },
+  {
+    id: "1",
+    fullname: "Tolgahan Hanoğlu",
+    profilePhoto: "https://randomuser.me/api/portraits/men/1.jpg",
+    age: 31,
+  },
+  {
+    id: "2",
+    fullname: "Can Cananoğlu",
+    profilePhoto: "https://randomuser.me/api/portraits/men/70.jpg",
+    age: 24,
+  },
 ];
 
 const posts = [
-  { id: "1", title: "Tolgahan'in gönderisi", user_id: "1" },
-  { id: "2", title: "Tolgahan'in gönderisi", user_id: "1" },
-  { id: "3", title: "Can'in gönderisi", user_id: "2" },
+  {
+    id: "1",
+    title: "Tolgahan'in gönderisi",
+    description:
+      "ne değişik bi şey bu... lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet",
+    user_id: "1",
+  },
+  {
+    id: "2",
+    title: "Tolgahan'in gönderisi",
+    description:
+      "kendimi çok değişik hissediyorum artik, lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet",
+    user_id: "1",
+  },
+  {
+    id: "3",
+    title: "Can'in gönderisi",
+    description:
+      "kitap okumak ve kod yazmak çok güzel ve eğlenceli, lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet",
+    user_id: "2",
+  },
 ];
 
 const comments = [

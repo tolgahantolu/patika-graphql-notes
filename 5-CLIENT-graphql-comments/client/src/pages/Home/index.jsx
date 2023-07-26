@@ -1,55 +1,31 @@
-import { List, Skeleton, Avatar } from "antd";
-
-const data = [
-  {
-    gender: "male",
-    name: {
-      title: "Mr",
-      first: "Vlast",
-      last: "Skidan",
-    },
-    email: "vlast.skidan@example.com",
-    picture: {
-      large: "https://randomuser.me/api/portraits/men/75.jpg",
-      medium: "https://randomuser.me/api/portraits/med/men/75.jpg",
-      thumbnail: "https://randomuser.me/api/portraits/thumb/men/75.jpg",
-    },
-    nat: "UA",
-  },
-  {
-    gender: "male",
-    name: {
-      title: "Mr",
-      first: "Vlast",
-      last: "Skidan",
-    },
-    email: "vlast.skidan@example.com",
-    picture: {
-      large: "https://randomuser.me/api/portraits/men/75.jpg",
-      medium: "https://randomuser.me/api/portraits/med/men/75.jpg",
-      thumbnail: "https://randomuser.me/api/portraits/thumb/men/75.jpg",
-    },
-    nat: "UA",
-  },
-];
+import { List, Avatar } from "antd";
+import { useQuery } from "@apollo/client";
+import { GET_ALL_POSTS } from "./queries";
 
 const Home = () => {
+  const { loading, error, data } = useQuery(GET_ALL_POSTS);
+  if (loading) {
+    return <p>Loading...</p>;
+  }
+
+  if (error) {
+    return <p>Something went wrong: {error.message}</p>;
+  }
+
   return (
     <List
       className="demo-loadmore-list"
       loading={false}
       itemLayout="horizontal"
       //loadMore={loadMore}
-      dataSource={data}
+      dataSource={data.getPosts}
       renderItem={(item) => (
         <List.Item>
-          <Skeleton avatar title={false} loading={item.loading} active>
-            <List.Item.Meta
-              avatar={<Avatar src={item.picture.large} />}
-              title={<a href="https://ant.design">{item.name?.last}</a>}
-              description="Ant Design, a design language for background applications, is refined by Ant UED Team"
-            />
-          </Skeleton>
+          <List.Item.Meta
+            avatar={<Avatar src={item.user.profilePhoto} />}
+            title={<a href={item.id}>{item.title}</a>}
+            description={item.description}
+          />
         </List.Item>
       )}
     />
