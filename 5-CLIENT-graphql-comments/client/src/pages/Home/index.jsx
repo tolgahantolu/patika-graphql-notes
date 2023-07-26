@@ -1,5 +1,6 @@
 import { List, Avatar } from "antd";
 import { useQuery } from "@apollo/client";
+import { Link } from "react-router-dom";
 import { GET_ALL_POSTS } from "./queries";
 
 const Home = () => {
@@ -23,7 +24,7 @@ const Home = () => {
         <List.Item>
           <List.Item.Meta
             avatar={<Avatar src={item.user.profilePhoto} />}
-            title={<a href={item.id}>{item.title}</a>}
+            title={<Link to={`post/${item.id}`}>{item.title}</Link>}
             description={item.description}
           />
         </List.Item>

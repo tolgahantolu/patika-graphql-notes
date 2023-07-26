@@ -8,6 +8,7 @@ import HeaderMenu from "./HeaderMenu";
 // pages
 import Home from "../../pages/Home";
 import NewPost from "../../pages/NewPost";
+import Post from "../../pages/Post";
 
 function App() {
   return (
@@ -23,6 +24,9 @@ function App() {
             </Route>
             <Route path="/new" exact>
               <NewPost />
+            </Route>
+            <Route path="/post/:id" exact>
+              <Post />
             </Route>
           </Switch>
         </Col>
