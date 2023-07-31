@@ -1,6 +1,12 @@
 export const Query = {
-  getUsers: (_, __, { db }) => db.users,
-  getUser: (_, { id }, { db }) => db.users.find((user) => user.id === id),
+  getUsers: async (_, __, { _db }) => {
+    const users = await _db.User.find();
+    return users;
+  },
+  getUser: async (_, { id }, { _db }) => {
+    const user = await _db.User.findById(id);
+    return user;
+  },
   getPosts: (_, __, { db }) => db.posts,
   getPost: (_, { id }, { db }) => db.posts.find((post) => post.id === id),
   getComments: (_, __, { db }) => db.comments,
