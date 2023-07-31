@@ -7,9 +7,20 @@ export const Query = {
     const user = await _db.User.findById(id);
     return user;
   },
-  getPosts: (_, __, { db }) => db.posts,
-  getPost: (_, { id }, { db }) => db.posts.find((post) => post.id === id),
-  getComments: (_, __, { db }) => db.comments,
-  getComment: (_, { id }, { db }) =>
-    db.comments.find((comment) => comment.id === id),
+  getPosts: async (_, __, { _db }) => {
+    const posts = await _db.Post.find();
+    return posts;
+  },
+  getPost: async (_, { id }, { _db }) => {
+    const post = await _db.Post.findById(id);
+    return post;
+  },
+  getComments: async (_, __, { _db }) => {
+    const comments = await _db.Comment.find();
+    return comments;
+  },
+  getComment: async (_, { id }, { _db }) => {
+    const comment = await _db.Comment.findById(id);
+    return comment;
+  },
 };

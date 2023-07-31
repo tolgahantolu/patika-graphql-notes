@@ -9,6 +9,8 @@ import db from "./db";
 db();
 
 import User from "./models/User";
+import Post from "./models/Post";
+import Comment from "./models/Comment";
 
 // DUMMY DATA
 import data from "./data";
@@ -16,7 +18,7 @@ import data from "./data";
 const server = new GraphQLServer({
   typeDefs,
   resolvers,
-  context: { pubsub, db: data, _db: { User } },
+  context: { pubsub, db: data, _db: { User, Post, Comment } },
 });
 
 server.start(() => console.log("Server is running on localhost:4000"));
