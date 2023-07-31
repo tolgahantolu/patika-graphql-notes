@@ -1,7 +1,8 @@
 import { Button, Comment, Divider, List } from "antd";
 import { useLazyQuery } from "@apollo/client";
-import { GET_POST_COMMENTS } from "./queries";
+import { GET_POST_COMMENTS } from "../queries";
 import { useEffect, useState } from "react";
+import NewCommentForm from "./NewCommentForm";
 const Comments = ({ post_id }) => {
   const [btnIsVisible, setBtnIsVisible] = useState(true);
   const [loadComments, { loading, error, data }] = useLazyQuery(
@@ -27,20 +28,26 @@ const Comments = ({ post_id }) => {
         </div>
       )}
       {!loading && data && (
-        <List
-          className="comment-list"
-          itemLayout="horizontal"
-          dataSource={data.getPost.comments}
-          renderItem={(item) => (
-            <li>
-              <Comment
-                author={item.user.fullname}
-                avatar={item.user.profilePhoto}
-                content={item.text}
-              />
-            </li>
-          )}
-        />
+        <>
+          <List
+            className="comment-list"
+            itemLayout="horizontal"
+            dataSource={data.getPost.comments}
+            renderItem={(item) => (
+              <li>
+                <Comment
+                  author={item.user.fullname}
+                  avatar={item.user.profilePhoto}
+                  content={item.text}
+                />
+              </li>
+            )}
+          />
+
+          <Divider> Add New Comment </Divider>
+
+          <NewCommentForm post_id={post_id} />
+        </>
       )}
     </>
   );

@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 import { useQuery } from "@apollo/client";
 import { GET_POST } from "./queries";
-import Comments from "./Comments";
+import CommentsList from "./Comments/CommentsList";
 
 const Post = () => {
   const { id } = useParams();
@@ -29,7 +29,7 @@ const Post = () => {
       />
       <p>{getPost.description}</p>
 
-      <Comments post_id={id} />
+      <CommentsList post_id={id} />
     </div>
   );
 };
