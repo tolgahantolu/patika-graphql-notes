@@ -1,41 +1,45 @@
 import { nanoid } from "nanoid";
 
 export const Mutation = {
-  createUser: (_, { data }, context) => {
-    const user = { id: nanoid(), ...data };
-    context.db.users.push(user);
+  createUser: async (_, { data }, context) => {
+    const newUser = new context._db.User({
+      ...data,
+    });
+
+    const user = await newUser.save();
+
     context.pubsub.publish("userCreated", { userCreated: user });
     return user;
   },
-  updateUser: (_, { id, data }, context) => {
-    const userIndex = context.db.users.findIndex((user) => user.id === id);
-    if (userIndex === -1) throw new Error("User not found!");
+  updateUser: async (_, { id, data }, context) => {
+    const isUserExist = await context._db.User.findById(id);
 
-    const updatedUser = (context.db.users[userIndex] = {
-      ...context.db.users[userIndex],
-      ...data,
+    if (!isUserExist) throw new Error("User not found!");
+
+    const updatedUser = await context._db.User.findByIdAndUpdate(id, data, {
+      new: true,
     });
 
     context.pubsub.publish("userUpdated", { userUpdated: updatedUser });
 
     return updatedUser;
   },
-  deleteUser: (_, { id }, context) => {
-    const userIndex = context.db.users.findIndex((user) => user.id === id);
-    if (userIndex === -1) throw new Error("User not found!");
-    const deletedUser = context.db.users[userIndex];
-    context.db.users.splice(userIndex, 1);
+  deleteUser: async (_, { id }, context) => {
+    const isUserExist = await context._db.User.findById(id);
+
+    if (!isUserExist) throw new Error("User not found!");
+
+    const deletedUser = await context._db.User.findByIdAndDelete(id);
 
     context.pubsub.publish("userDeleted", { userDeleted: deletedUser });
 
     return deletedUser;
   },
-  deleteAllUsers: () => {
-    const length = context.db.users.length;
-    context.db.users.splice(0, length);
+  deleteAllUsers: async (_, __, context) => {
+    const deleteUsers = await context._db.User.deleteMany({});
 
     return {
-      count: length,
+      count: deleteUsers.deletedCount,
     };
   },
   createPost: (_, { data }, context) => {
