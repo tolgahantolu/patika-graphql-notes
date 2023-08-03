@@ -5,6 +5,14 @@ const CommentSchema = new Schema({
     type: String,
     required: true,
   },
+  user: {
+    type: Schema.Types.ObjectId,
+    ref: "User",
+  },
+  post: {
+    type: Schema.Types.ObjectId,
+    ref: "Post",
+  },
 });
 
 export default model("Comment", CommentSchema);
