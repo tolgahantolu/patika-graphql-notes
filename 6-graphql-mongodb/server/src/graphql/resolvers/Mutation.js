@@ -1,4 +1,5 @@
 import { nanoid } from "nanoid";
+import mongoose from "mongoose";
 
 export const Mutation = {
   createUser: async (_, { data }, context) => {
@@ -42,34 +43,48 @@ export const Mutation = {
       count: deleteUsers.deletedCount,
     };
   },
-  createPost: (_, { data }, context) => {
-    const post = { id: nanoid(), ...data };
-    context.db.posts.push(post);
+  createPost: async (_, { data }, context) => {
+    const newPost = new context._db.Post({ ...data });
+    const post = await newPost.save();
+
+    const user = await context._db.User.findById(
+      new mongoose.Types.ObjectId(data.user)
+    );
+    user.posts.push(post.id);
+    user.save();
+
     return post;
   },
-  updatePost: (_, { id, data }, context) => {
-    const postIndex = context.db.posts.findIndex((post) => post.id === id);
-    if (postIndex === -1) throw new Error("Post not found!");
-    const updatedPost = (context.db.posts[postIndex] = {
-      ...context.db.posts[postIndex],
-      ...data,
+  updatePost: async (_, { id, data }, context) => {
+    const isPostExist = await context._db.Post.findById(id);
+
+    if (!isPostExist) throw new Error("Post not found!");
+
+    const updatedPost = await context._db.Post.findByIdAndUpdate(id, data, {
+      new: true,
     });
 
     return updatedPost;
   },
-  deletePost: (_, { id }, context) => {
-    const postIndex = context.db.posts.findIndex((post) => post.id === id);
-    if (postIndex === -1) throw new Error("Post not found!");
-    const deletedPost = context.db.posts[postIndex];
-    context.db.posts.splice(postIndex, 1);
+  deletePost: async (_, { id }, context) => {
+    const isPostExist = await context._db.Post.findById(id);
+
+    if (!isPostExist) throw new Error("Post not found!");
+
+    const deletedPost = await context._db.Post.findByIdAndDelete(id);
+    const user = await context._db.User.findById(
+      new mongoose.Types.ObjectId(deletedPost.user)
+    );
+    user.posts.pop(id);
+    user.save();
+
     return deletedPost;
   },
-  deleteAllPosts: (_, __, context) => {
-    const length = context.db.posts.length;
-    context.db.posts.splice(0, length);
+  deleteAllPosts: async (_, __, context) => {
+    const deleteUsers = await context._db.Post.deleteMany({});
 
     return {
-      count: length,
+      count: deleteUsers.deletedCount,
     };
   },
   createComment: (_, { data }, context) => {

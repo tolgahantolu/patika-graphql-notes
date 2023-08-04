@@ -13,7 +13,7 @@ input CreatePostInput {
   description: String
   shortDescription: String
   cover: String
-  user_id: ID!
+  user: ID!
 }
 
 input UpdatePostInput {
@@ -21,7 +21,7 @@ input UpdatePostInput {
   description: String
   shortDescription: String
   cover: String
-  user_id: ID
+  user: ID
 }
 
 type Query {
@@ -37,5 +37,5 @@ type Mutation {
 }
 
 type Subscription {
-  postCreated(user_id: ID): Post!
+  postCreated(user: ID): Post!
 }
