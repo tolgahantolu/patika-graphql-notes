@@ -14,7 +14,7 @@ const NewCommentForm = ({ post_id }) => {
     try {
       await createComment({
         variables: {
-          data: { ...values, post_id },
+          data: { ...values, post: post_id },
         },
       });
 
@@ -27,7 +27,7 @@ const NewCommentForm = ({ post_id }) => {
   return (
     <Form name="basic" onFinish={handleSubmit} autoComplete="off" ref={formRef}>
       <Form.Item
-        name="user_id"
+        name="user"
         rules={[{ required: true, message: "Please select a user!" }]}
       >
         <Select

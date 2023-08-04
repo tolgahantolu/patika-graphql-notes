@@ -14,7 +14,6 @@ export const ADD_NEW_POST = gql`
     createPost(data: $data) {
       id
       title
-      user_id
       user {
         id
         fullname

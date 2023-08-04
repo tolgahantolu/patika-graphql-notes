@@ -55,7 +55,7 @@ const NewPostForm = () => {
       </Form.Item>
 
       <Form.Item
-        name="user_id"
+        name="user"
         rules={[{ required: true, message: "Please select a user!" }]}
       >
         <Select
