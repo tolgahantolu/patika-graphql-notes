@@ -87,38 +87,66 @@ export const Mutation = {
       count: deleteUsers.deletedCount,
     };
   },
-  createComment: (_, { data }, context) => {
-    const comment = { id: nanoid(), ...data };
-    context.db.comments.push(comment);
+  createComment: async (_, { data }, context) => {
+    const newComment = new context._db.Comment(data);
+    const comment = await newComment.save();
+
+    const post = await context._db.Post.findById(
+      new mongoose.Types.ObjectId(data.post)
+    );
+    const user = await context._db.User.findById(
+      new mongoose.Types.ObjectId(data.user)
+    );
+
+    user.comments.push(comment.id);
+    post.comments.push(comment.id);
+
+    await user.save();
+    await post.save();
+
     return comment;
   },
-  updateComment: (_, { id, data }, context) => {
-    const commentIndex = context.db.comments.findIndex(
-      (comment) => comment.id === id
+  updateComment: async (_, { id, data }, context) => {
+    const isCommentExist = await context._db.Comment.findById(id);
+
+    if (!isCommentExist) throw new Error("Comment not found!");
+
+    const updatedComment = await context._db.Comment.findByIdAndUpdate(
+      id,
+      data,
+      {
+        new: true,
+      }
     );
-    if (commentIndex === -1) throw new Error("Comment not found!");
-    const updatedComment = (context.db.comments[commentIndex] = {
-      ...context.db.comments[commentIndex],
-      ...data,
-    });
 
     return updatedComment;
   },
-  deleteComment: (_, { id }, context) => {
-    const commentIndex = context.db.comments.findIndex(
-      (comment) => comment.id === id
+  deleteComment: async (_, { id }, context) => {
+    const isCommentExist = await context._db.Comment.findById(id);
+
+    if (!isCommentExist) throw new Error("Comment not found!");
+
+    const deletedComment = await context._db.Comment.findByIdAndDelete(id);
+
+    const user = await context._db.User.findById(
+      new mongoose.Types.ObjectId(deletedComment.user)
     );
-    if (commentIndex === -1) throw new Error("Comment not found!");
-    const deletedComment = context.db.comments[commentIndex];
-    context.db.comments.splice(commentIndex, 1);
+    const post = await context._db.Post.findById(
+      new mongoose.Types.ObjectId(deletedComment.post)
+    );
+
+    user.comments.pop(id);
+    post.comments.pop(id);
+    user.save();
+    post.save();
+
     return deletedComment;
   },
-  deleteAllComments: () => {
-    const length = context.db.comments.length;
-    context.db.comments.splice(0, length);
+  deleteAllComments: async (_, __, context) => {
+    const deleteComments = await context._db.Comment.deleteMany({});
 
     return {
-      count: length,
+      count: deleteComments.deletedCount,
     };
   },
 };
