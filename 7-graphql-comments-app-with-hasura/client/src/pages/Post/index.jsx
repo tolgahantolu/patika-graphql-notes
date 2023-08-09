@@ -18,16 +18,16 @@ const Post = () => {
     return <p>Something went wrong: {error.message}</p>;
   }
 
-  const { getPost } = data;
+  const { posts_by_pk } = data;
 
   return (
     <div>
-      <h1>{getPost.title}</h1>
+      <h1>{posts_by_pk.title}</h1>
       <img
-        src={getPost.cover}
+        src={posts_by_pk.cover}
         style={{ width: "460px", height: "150px", objectFit: "cover" }}
       />
-      <p>{getPost.description}</p>
+      <p>{posts_by_pk.description}</p>
 
       <CommentsList post_id={id} />
     </div>

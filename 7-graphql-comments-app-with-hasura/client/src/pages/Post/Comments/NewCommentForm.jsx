@@ -14,7 +14,7 @@ const NewCommentForm = ({ post_id }) => {
     try {
       await createComment({
         variables: {
-          data: { ...values, post: post_id },
+          input: { ...values, post_id },
         },
       });
 
@@ -27,7 +27,7 @@ const NewCommentForm = ({ post_id }) => {
   return (
     <Form name="basic" onFinish={handleSubmit} autoComplete="off" ref={formRef}>
       <Form.Item
-        name="user"
+        name="user_id"
         rules={[{ required: true, message: "Please select a user!" }]}
       >
         <Select
@@ -36,7 +36,7 @@ const NewCommentForm = ({ post_id }) => {
           size="medium"
           placeholder="Select a user"
         >
-          {users?.getUsers.map(({ id, fullname }) => (
+          {users?.users.map(({ id, fullname }) => (
             <Option key={id} value={id}>
               {fullname}
             </Option>

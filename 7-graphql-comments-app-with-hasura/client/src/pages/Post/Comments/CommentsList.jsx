@@ -17,6 +17,8 @@ const Comments = ({ post_id }) => {
     if (!loading && data) return setBtnIsVisible(false);
   }, [loading, data]);
 
+  console.log(data);
+
   return (
     <>
       <Divider>Comments</Divider>
@@ -32,12 +34,12 @@ const Comments = ({ post_id }) => {
           <List
             className="comment-list"
             itemLayout="horizontal"
-            dataSource={data.getPost.comments}
+            dataSource={data.posts_by_pk.posts_comments}
             renderItem={(item) => (
               <li>
                 <Comment
-                  author={item.user.fullname}
-                  avatar={item.user.profilePhoto}
+                  author={item.comments_user.fullname}
+                  avatar={item.comments_user.profilePhoto}
                   content={item.text}
                 />
               </li>

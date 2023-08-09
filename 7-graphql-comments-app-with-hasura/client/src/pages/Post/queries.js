@@ -1,8 +1,8 @@
 import { gql } from "@apollo/client";
 
 export const GET_POST = gql`
-  query getPost($id: ID!) {
-    getPost(id: $id) {
+  query getPost($id: Int!) {
+    posts_by_pk(id: $id) {
       id
       title
       description
@@ -12,12 +12,12 @@ export const GET_POST = gql`
 `;
 
 export const GET_POST_COMMENTS = gql`
-  query getComments($id: ID!) {
-    getPost(id: $id) {
-      comments {
+  query getComments($id: Int!) {
+    posts_by_pk(id: $id) {
+      posts_comments {
         id
         text
-        user {
+        comments_user {
           fullname
           profilePhoto
         }
