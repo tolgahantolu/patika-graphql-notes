@@ -14,7 +14,7 @@ const NewPostForm = () => {
     try {
       await savePost({
         variables: {
-          data: values,
+          input: values,
         },
       });
       history.push("/");
@@ -55,7 +55,7 @@ const NewPostForm = () => {
       </Form.Item>
 
       <Form.Item
-        name="user"
+        name="user_id"
         rules={[{ required: true, message: "Please select a user!" }]}
       >
         <Select
@@ -64,7 +64,7 @@ const NewPostForm = () => {
           size="large"
           placeholder="Select a user"
         >
-          {users?.getUsers.map(({ id, fullname }) => (
+          {users?.users.map(({ id, fullname }) => (
             <Option key={id} value={id}>
               {fullname}
             </Option>
